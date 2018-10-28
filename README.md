@@ -18,7 +18,7 @@ The CookieStateBase class provides an IStateStorage base implementation that sto
 Applicaton state can be accessed using exactly the same methodology by inheriting from the ApplicationStateBase class.
 
 ## Composite State ##
-IStateStorage is non judgemental - It simply provides a way by which you can access and save data. If you want a complex state storage mechanism for your application, yu could create your own implementation of IStateStorage with strongly typed properties for all of your key data items and then, internally, use various other IStateSTorage implemntations to store different items in different places, making use of Web Session, Cookies and Application state within a single State Repository.
+IStateStorage is non judgemental - It simply provides a way by which you can access and save data. If you want a complex state storage mechanism for your application, you could create your own implementation of IStateStorage with strongly typed properties for all of your key data items and then, internally, use various other IStateStorage implemntations to store different items in different places, making use of Web Session, Cookies and Application state within a single State Repository.
 
 If you extend the IStateStorage interface with your own interface to cover the new properties that you add to it you can then easilly create a fake implementation using InMemorystateBase class for your testing.
 
@@ -35,7 +35,7 @@ Our other open source repositories can be found here...
 ### Where can I get it?
 You can download the package for this project from any of the following package managers...
 
-- **NUGET** - [https://www.nuget.org/packages/Ministry.Conversions](https://www.nuget.org/packages/Ministry.Conversions)
+- **NUGET** - [https://www.nuget.org/packages/Ministry.State](https://www.nuget.org/packages/Ministry.State)
 
 ### Contribution guidelines
 If you would like to contribute to the project, please contact me.
