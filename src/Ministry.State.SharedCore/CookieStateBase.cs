@@ -13,7 +13,7 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Web;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
 namespace Ministry.State
@@ -30,12 +30,12 @@ namespace Ministry.State
         /// <summary>
         /// Initializes a new instance of the <see cref="CookieStateBase" /> class.
         /// </summary>
-        /// <param name="webContext">The web context.</param>
+        /// <param name="httpContextAccessor">The HTTP context accessor.</param>
         /// <param name="persistanceDate">The persistance date.</param>
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        protected CookieStateBase(HttpContextBase webContext, DateTime? persistanceDate = null)
+        protected CookieStateBase(IHttpContextAccessor httpContextAccessor, DateTime? persistanceDate = null)
         {
-            Context = webContext;
+            Context = httpContextAccessor.HttpContext;
             this.persistanceDate = persistanceDate;
         }
 
@@ -44,15 +44,15 @@ namespace Ministry.State
         /// <summary>
         /// Gets the context.
         /// </summary>
-        protected HttpContextBase Context { get; }
+        protected HttpContext Context { get; }
 
         /// <summary>
         /// Clears the state.
         /// </summary>
         public void Clear()
         {
-            Context.Request.Cookies.Clear();
-            Context.Response.Cookies.Clear();
+            foreach (var cookie in Context.Request.Cookies.Keys)
+                Context.Response.Cookies.Delete(cookie);
         }
 
         /// <summary>
@@ -62,10 +62,10 @@ namespace Ministry.State
         /// <returns></returns>
         public object GetValue(string key)
         {
-            var item = Context.Request.Cookies.Get(key);
+            var item = Context.Request.Cookies[key];
             return item == null
                 ? null
-                : JsonConvert.DeserializeObject(item.Value);
+                : JsonConvert.DeserializeObject(item);
         }
 
         /// <summary>
@@ -76,10 +76,10 @@ namespace Ministry.State
         /// <returns></returns>
         public T GetValue<T>(string key)
         {
-            var item = Context.Request.Cookies.Get(key);
+            var item = Context.Request.Cookies[key];
             return item == null
                 ? default(T)
-                : JsonConvert.DeserializeObject<T>(item.Value);
+                : JsonConvert.DeserializeObject<T>(item);
         }
 
         /// <summary>
@@ -88,8 +88,8 @@ namespace Ministry.State
         /// <param name="key">The key.</param>
         public void Remove(string key)
         {
-            if (Context.Request.Cookies.Get(key) != null)
-                Context.Response.Cookies.Remove(key);
+            if (Context.Request.Cookies[key] != null)
+                Context.Response.Cookies.Delete(key);
         }
 
         /// <summary>
@@ -122,19 +122,25 @@ namespace Ministry.State
             if (Context.Request.Cookies == null)
                 throw new NullReferenceException("The Cookies element of the context is null.");
 
-            var existingCookie = Context.Request.Cookies.Get(key);
+            var existingCookie = Context.Request.Cookies[key];
 
             if (existingCookie != null)
             {
-                existingCookie.Value = JsonConvert.SerializeObject(value);
-                if (persistanceDate.HasValue) existingCookie.Expires = persistanceDate.Value;
+                if (persistanceDate.HasValue)
+                {
+                    Context.Response.Cookies.Delete(key);
+                    Context.Response.Cookies.Append(key, JsonConvert.SerializeObject(value),
+                        new CookieOptions { Expires = persistanceDate.Value });
+                }
             }
             else
             {
-                var newCookie = new HttpCookie(key, JsonConvert.SerializeObject(value));
-                if (persistanceDate.HasValue) newCookie.Expires = persistanceDate.Value;
-                Context.Response.Cookies.Add(newCookie);
-            }
+                if (persistanceDate.HasValue)
+                    Context.Response.Cookies.Append(key, JsonConvert.SerializeObject(value), 
+                        new CookieOptions { Expires = persistanceDate.Value });
+                else
+                    Context.Response.Cookies.Append(key, JsonConvert.SerializeObject(value));
+             }
         }
 
         #endregion

@@ -22,10 +22,8 @@
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Ministry.State.Abstractions\Ministry.State.Abstractions.csproj" />
-  </ItemGroup>
-
   <Import Project="..\Ministry.State.Shared\Ministry.State.Shared.projitems" Label="Shared" />
+
+  <Import Project="..\Ministry.State.SharedCore\Ministry.State.Shared.projitems" Label="Shared" />
 
 </Project>
