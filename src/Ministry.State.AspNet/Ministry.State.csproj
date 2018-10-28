@@ -18,4 +18,12 @@
 
   <Import Project="..\Ministry.State.Shared\Ministry.State.Shared.projitems" Label="Shared" />
 
+  <ItemGroup>
+    <ProjectReference Include="..\Ministry.State.Abstractions\Ministry.State.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Web" />
+  </ItemGroup>
+
 </Project>

@@ -9,7 +9,6 @@
     <Import_RootNamespace>Ministry.State</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)ApplicationStateBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CookieStateBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)InMemoryStateBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)InMemoryStateBase2.cs" />

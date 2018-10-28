@@ -24,24 +24,23 @@ namespace Ministry.State
     /// Wrapper for Session state
     /// </summary>
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public interface IApplicationState : IStateStorage
+    public interface IWebSession : IStateStorage
     { }
 
     #endregion
 
     /// <summary>
-    /// Wrapper for Application state
+    /// Wrapper for Session state
     /// </summary>
-    public abstract class ApplicationStateBase : IStateStorage
+    public abstract class WebSessionBase : IStateStorage
     {
-        #region | Constructor |
+        #region | Construction |
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApplicationStateBase"/> class.
+        /// Initializes a new instance of the <see cref="WebSessionBase"/> class.
         /// </summary>
         /// <param name="webContext">The web context.</param>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        protected ApplicationStateBase(HttpContextBase webContext)
+        protected WebSessionBase(HttpContextBase webContext)
         {
             Context = webContext;
         }
@@ -52,20 +51,22 @@ namespace Ministry.State
         /// Gets the context.
         /// </summary>
         // ReSharper disable once MemberCanBePrivate.Global
-        protected HttpContextBase Context { get; }
+        protected HttpContext Context { get; }
 
         /// <summary>
-        /// Clears the state.
+        /// Clears the session state.
         /// </summary>
-        public void Clear() => Context.Application.Clear();
+        public void Clear() => Context.Session.Clear();
 
         /// <summary>
         /// Gets the value.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns></returns>
-        public object GetValue(string key) 
-            => Context.Application[key];
+        public object GetValue(string key)
+        {
+            return Context.Session == null ? null : Context.Session[key];
+        }
 
         /// <summary>
         /// Gets the value.
@@ -74,9 +75,9 @@ namespace Ministry.State
         /// <param name="key">The key.</param>
         /// <returns></returns>
         public T GetValue<T>(string key) 
-            => Context.Application[key] == null 
+            => Context.Session?[key] == null 
                 ? default(T) 
-                : (T) Context.Application[key];
+                : (T) Context.Session[key];
 
         /// <summary>
         /// Sets the value.
@@ -86,10 +87,10 @@ namespace Ministry.State
         /// <exception cref="System.NullReferenceException">The Session element of the context is null.</exception>
         public void SetValue(string key, object value)
         {
-            if (Context.Application == null)
-                throw new NullReferenceException("The Application state element of the context is null.");
+            if (Context.Session == null)
+                throw new NullReferenceException("The Session element of the context is null.");
 
-            Context.Application[key] = value;
+            Context.Session[key] = value;
         }
 
         /// <summary>
@@ -101,10 +102,10 @@ namespace Ministry.State
         /// <exception cref="System.NullReferenceException">The Session element of the context is null.</exception>
         public void SetValue<T>(string key, T value)
         {
-            if (Context.Application == null)
-                throw new NullReferenceException("The Application state element of the context is null.");
+            if (Context.Session == null)
+                throw new NullReferenceException("The Session element of the context is null.");
 
-            Context.Application[key] = value;
+            Context.Session[key] = value;
         }
     }
 }

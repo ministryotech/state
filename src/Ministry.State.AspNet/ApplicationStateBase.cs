@@ -11,7 +11,6 @@
 // FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Web;
@@ -19,38 +18,19 @@ using System.Web;
 // ReSharper disable once CheckNamespace
 namespace Ministry.State
 {
-    #region | Interface |
-
     /// <summary>
-    /// Wrapper for Session state
+    /// Wrapper for Application state
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public interface IWebSession : IStateStorage
-    { }
-
-    #endregion
-
-    /// <summary>
-    /// Wrapper for Session state
-    /// </summary>
-    public abstract class WebSessionBase : IStateStorage
+    public abstract class ApplicationStateBase : IStateStorage
     {
-        #region | Construction |
+        #region | Constructor |
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebSessionBase"/> class.
+        /// Initializes a new instance of the <see cref="ApplicationStateBase"/> class.
         /// </summary>
         /// <param name="webContext">The web context.</param>
-        protected WebSessionBase(IHttpContextAccessor contextAccessor)
-        {
-            Context = contextAccessor.HttpContext;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebSessionBase"/> class.
-        /// </summary>
-        /// <param name="webContext">The web context.</param>
-        protected WebSessionBase(HttpContextBase webContext)
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+        protected ApplicationStateBase(HttpContextBase webContext)
         {
             Context = webContext;
         }
@@ -64,19 +44,17 @@ namespace Ministry.State
         protected HttpContext Context { get; }
 
         /// <summary>
-        /// Clears the session state.
+        /// Clears the state.
         /// </summary>
-        public void Clear() => Context.Session.Clear();
+        public void Clear() => Context.Application.Clear();
 
         /// <summary>
         /// Gets the value.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns></returns>
-        public object GetValue(string key)
-        {
-            return Context.Session == null ? null : Context.Session[key];
-        }
+        public object GetValue(string key) 
+            => Context.Application[key];
 
         /// <summary>
         /// Gets the value.
@@ -85,9 +63,9 @@ namespace Ministry.State
         /// <param name="key">The key.</param>
         /// <returns></returns>
         public T GetValue<T>(string key) 
-            => Context.Session?[key] == null 
+            => Context.Application[key] == null 
                 ? default(T) 
-                : (T) Context.Session[key];
+                : (T) Context.Application[key];
 
         /// <summary>
         /// Sets the value.
@@ -97,10 +75,10 @@ namespace Ministry.State
         /// <exception cref="System.NullReferenceException">The Session element of the context is null.</exception>
         public void SetValue(string key, object value)
         {
-            if (Context.Session == null)
-                throw new NullReferenceException("The Session element of the context is null.");
+            if (Context.Application == null)
+                throw new NullReferenceException("The Application state element of the context is null.");
 
-            Context.Session[key] = value;
+            Context.Application[key] = value;
         }
 
         /// <summary>
@@ -112,10 +90,10 @@ namespace Ministry.State
         /// <exception cref="System.NullReferenceException">The Session element of the context is null.</exception>
         public void SetValue<T>(string key, T value)
         {
-            if (Context.Session == null)
-                throw new NullReferenceException("The Session element of the context is null.");
+            if (Context.Application == null)
+                throw new NullReferenceException("The Application state element of the context is null.");
 
-            Context.Session[key] = value;
+            Context.Application[key] = value;
         }
     }
 }
