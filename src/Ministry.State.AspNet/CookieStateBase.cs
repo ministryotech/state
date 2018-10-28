@@ -16,25 +16,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Web;
 using Newtonsoft.Json;
 
-// TODO: Move to Ministry.State Libraries (One Solution)
-// MInistry.State.Abstractions
-// Ministry.State.WebSession
-// Ministry.State.Cookies
-
-// ReSharper disable once CheckNamespace
 namespace Ministry.State
 {
-    #region | Interface |
-
-    /// <summary>
-    /// Wrapper for a state storage mechanism that uses persistent cookies.
-    /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public interface ICookieState : IStateStorage
-    { }
-
-    #endregion
-
     /// <summary>
     /// Wrapper for a state storage mechanism that uses persistent cookies.
     /// </summary>
@@ -61,7 +44,6 @@ namespace Ministry.State
         /// <summary>
         /// Gets the context.
         /// </summary>
-        // ReSharper disable once MemberCanBePrivate.Global
         protected HttpContextBase Context { get; }
 
         /// <summary>

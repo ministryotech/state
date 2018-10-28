@@ -12,23 +12,10 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Web;
 
-// ReSharper disable once CheckNamespace
 namespace Ministry.State
 {
-    #region | Interface |
-
-    /// <summary>
-    /// Wrapper for Session state
-    /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public interface IWebSession : IStateStorage
-    { }
-
-    #endregion
-
     /// <summary>
     /// Wrapper for Session state
     /// </summary>
@@ -50,8 +37,7 @@ namespace Ministry.State
         /// <summary>
         /// Gets the context.
         /// </summary>
-        // ReSharper disable once MemberCanBePrivate.Global
-        protected HttpContext Context { get; }
+        protected HttpContextBase Context { get; }
 
         /// <summary>
         /// Clears the session state.
@@ -63,10 +49,7 @@ namespace Ministry.State
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns></returns>
-        public object GetValue(string key)
-        {
-            return Context.Session == null ? null : Context.Session[key];
-        }
+        public object GetValue(string key) => Context.Session[key];
 
         /// <summary>
         /// Gets the value.
@@ -75,7 +58,7 @@ namespace Ministry.State
         /// <param name="key">The key.</param>
         /// <returns></returns>
         public T GetValue<T>(string key) 
-            => Context.Session?[key] == null 
+            => Context.Session[key] == null 
                 ? default(T) 
                 : (T) Context.Session[key];
 

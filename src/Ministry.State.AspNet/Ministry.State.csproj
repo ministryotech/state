@@ -16,10 +16,8 @@
     <PackageProjectUrl>http://www.ministryotech.co.uk/developers/open-source-projects/</PackageProjectUrl>
   </PropertyGroup>
 
-  <Import Project="..\Ministry.State.Shared\Ministry.State.Shared.projitems" Label="Shared" />
-
   <ItemGroup>
-    <ProjectReference Include="..\Ministry.State.Abstractions\Ministry.State.Abstractions.csproj" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 
   <ItemGroup>

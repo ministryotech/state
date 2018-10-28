@@ -11,96 +11,69 @@
 // FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Web;
+using System.Collections.Generic;
+using System.Linq;
 
-// ReSharper disable once CheckNamespace
 namespace Ministry.State
 {
-    #region | Interface |
-
     /// <summary>
-    /// Wrapper for Session state
+    /// Fake state implementation that stores values in memory.
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public interface IWebSession : IStateStorage
-    { }
-
-    #endregion
-
-    /// <summary>
-    /// Wrapper for Session state
-    /// </summary>
-    public abstract class WebSessionBase : IStateStorage
+    /// <remarks>
+    /// This is a useful swap out for a concrete state. You can inherit a custom version for session storage checking if needed.
+    /// </remarks>
+    public class InMemoryState : IStateStorage
     {
         #region | Construction |
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebSessionBase"/> class.
+        /// Initializes a new instance of the <see cref="Items"/> class.
         /// </summary>
-        /// <param name="webContext">The web context.</param>
-        protected WebSessionBase(IHttpContextAccessor contextAccessor)
+        public InMemoryState()
         {
-            Context = contextAccessor.HttpContext;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebSessionBase"/> class.
-        /// </summary>
-        /// <param name="webContext">The web context.</param>
-        protected WebSessionBase(HttpContextBase webContext)
-        {
-            Context = webContext;
+            Items = new List<StateItem>();
         }
 
         #endregion
 
         /// <summary>
-        /// Gets the context.
+        /// Gets the in memory session.
         /// </summary>
-        // ReSharper disable once MemberCanBePrivate.Global
-        protected HttpContext Context { get; }
+        protected List<StateItem> Items { get; }
 
         /// <summary>
-        /// Clears the session state.
+        /// Clears the state.
         /// </summary>
-        public void Clear() => Context.Session.Clear();
+        public void Clear() => Items.Clear();
 
         /// <summary>
         /// Gets the value.
         /// </summary>
         /// <param name="key">The key.</param>
-        /// <returns></returns>
-        public object GetValue(string key)
-        {
-            return Context.Session == null ? null : Context.Session[key];
-        }
+        /// <returns>The value.</returns>
+        public object GetValue(string key) 
+            => Items.All(o => o.Key != key) ? null : Items.FirstOrDefault(o => o.Key == key)?.Value;
 
         /// <summary>
         /// Gets the value.
         /// </summary>
         /// <typeparam name="T">The type of the object to get.</typeparam>
         /// <param name="key">The key.</param>
-        /// <returns></returns>
+        /// <returns>The value.</returns>
         public T GetValue<T>(string key) 
-            => Context.Session?[key] == null 
-                ? default(T) 
-                : (T) Context.Session[key];
+            => (T)Items.FirstOrDefault(o => o.Key == key)?.Value;
 
         /// <summary>
         /// Sets the value.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="value">The value.</param>
-        /// <exception cref="System.NullReferenceException">The Session element of the context is null.</exception>
         public void SetValue(string key, object value)
         {
-            if (Context.Session == null)
-                throw new NullReferenceException("The Session element of the context is null.");
-
-            Context.Session[key] = value;
+            if (Items.All(o => o.Key != key))
+                Items.Add(new StateItem(key, value));
+            else
+                Items.First(o => o.Key == key).Value = value;
         }
 
         /// <summary>
@@ -109,13 +82,49 @@ namespace Ministry.State
         /// <typeparam name="T">The type of the value to set.</typeparam>
         /// <param name="key">The key.</param>
         /// <param name="value">The value.</param>
-        /// <exception cref="System.NullReferenceException">The Session element of the context is null.</exception>
         public void SetValue<T>(string key, T value)
         {
-            if (Context.Session == null)
-                throw new NullReferenceException("The Session element of the context is null.");
-
-            Context.Session[key] = value;
+            if (Items.All(o => o.Key != key))
+                Items.Add(new StateItem(key, value));
+            else
+                Items.First(o => o.Key == key).Value = value;
         }
+
+        #region | Nested Classes |
+
+        /// <summary>
+        /// A State Item
+        /// </summary>
+        protected class StateItem
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="StateItem"/> class.
+            /// </summary>
+            /// <param name="key">The key.</param>
+            /// <param name="value">The value.</param>
+            public StateItem(string key, object value)
+            {
+                Key = key;
+                Value = value;
+            }
+
+            /// <summary>
+            /// Gets or sets the key.
+            /// </summary>
+            /// <value>
+            /// The key.
+            /// </value>
+            public string Key { get; }
+
+            /// <summary>
+            /// Gets or sets the value.
+            /// </summary>
+            /// <value>
+            /// The value.
+            /// </value>
+            public object Value { get; set; }
+        }
+
+        #endregion
     }
 }

@@ -11,7 +11,6 @@
 // FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-// ReSharper disable once CheckNamespace
 namespace Ministry.State
 {
     /// <summary>
@@ -28,7 +27,7 @@ namespace Ministry.State
         /// Gets the value.
         /// </summary>
         /// <param name="key">The key.</param>
-        /// <returns></returns>
+        /// <returns>The value.</returns>
         object GetValue(string key);
 
         /// <summary>
@@ -36,7 +35,7 @@ namespace Ministry.State
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="key">The key.</param>
-        /// <returns></returns>
+        /// <returns>The value.</returns>
         T GetValue<T>(string key);
 
         /// <summary>

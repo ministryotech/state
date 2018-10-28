@@ -15,7 +15,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Web;
 
-// ReSharper disable once CheckNamespace
 namespace Ministry.State
 {
     /// <summary>
@@ -23,7 +22,7 @@ namespace Ministry.State
     /// </summary>
     public abstract class ApplicationStateBase : IStateStorage
     {
-        #region | Constructor |
+        #region | Construction |
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApplicationStateBase"/> class.
@@ -41,7 +40,7 @@ namespace Ministry.State
         /// Gets the context.
         /// </summary>
         // ReSharper disable once MemberCanBePrivate.Global
-        protected HttpContext Context { get; }
+        protected HttpContextBase Context { get; }
 
         /// <summary>
         /// Clears the state.
@@ -52,7 +51,7 @@ namespace Ministry.State
         /// Gets the value.
         /// </summary>
         /// <param name="key">The key.</param>
-        /// <returns></returns>
+        /// <returns>The value.</returns>
         public object GetValue(string key) 
             => Context.Application[key];
 
@@ -61,7 +60,7 @@ namespace Ministry.State
         /// </summary>
         /// <typeparam name="T">The type of the object to get.</typeparam>
         /// <param name="key">The key.</param>
-        /// <returns></returns>
+        /// <returns>The value.</returns>
         public T GetValue<T>(string key) 
             => Context.Application[key] == null 
                 ? default(T) 
