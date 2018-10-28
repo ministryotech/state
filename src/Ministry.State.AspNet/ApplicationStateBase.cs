@@ -67,6 +67,12 @@ namespace Ministry.State
                 : (T) Context.Application[key];
 
         /// <summary>
+        /// Removes the specified iten from state.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        public void Remove(string key) => Context.Application.Remove(key);
+
+        /// <summary>
         /// Sets the value.
         /// </summary>
         /// <param name="key">The key.</param>

@@ -21,6 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Ministry.State.Abstractions\Ministry.State.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="System.Web" />
   </ItemGroup>
 

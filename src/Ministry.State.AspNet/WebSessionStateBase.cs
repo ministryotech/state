@@ -63,6 +63,12 @@ namespace Ministry.State
                 : (T) Context.Session[key];
 
         /// <summary>
+        /// Removes the specified iten from state.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        public void Remove(string key) => Context.Session.Remove(key);
+
+        /// <summary>
         /// Sets the value.
         /// </summary>
         /// <param name="key">The key.</param>

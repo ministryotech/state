@@ -83,6 +83,16 @@ namespace Ministry.State
         }
 
         /// <summary>
+        /// Removes the specified iten from state.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        public void Remove(string key)
+        {
+            if (Context.Response.Cookies.Get(key) != null)
+                Context.Response.Cookies.Remove(key);
+        }
+
+        /// <summary>
         /// Sets the value.
         /// </summary>
         /// <param name="key">The key.</param>

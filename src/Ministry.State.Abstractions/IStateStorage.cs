@@ -11,6 +11,7 @@
 // FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+// ReSharper disable once CheckNamespace
 namespace Ministry.State
 {
     /// <summary>
@@ -52,5 +53,11 @@ namespace Ministry.State
         /// <param name="key">The key.</param>
         /// <param name="value">The value.</param>
         void SetValue<T>(string key, T value);
+
+        /// <summary>
+        /// Removes the specified iten from state.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        void Remove(string key);
     }
 }

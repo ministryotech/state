@@ -64,6 +64,16 @@ namespace Ministry.State
             => (T)Items.FirstOrDefault(o => o.Key == key)?.Value;
 
         /// <summary>
+        /// Removes the specified iten from state.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        public void Remove(string key)
+        {
+            var item = Items.FirstOrDefault(o => o.Key == key);
+            if (item != null) Items.Remove(item);
+        }
+
+        /// <summary>
         /// Sets the value.
         /// </summary>
         /// <param name="key">The key.</param>
