@@ -24,8 +24,10 @@ If you extend the IStateStorage interface with your own interface to cover the n
 
 This is also an extensible model. You can start simply with your own Session implementation extending WebSessionBase but then change your mind and make it composite - none of the consuming code would need to be changed at all.
 
-## Upgrading v3.x
-v3 no longer supports .net Standard and .net Framework.
+## Versions to Use
+Use v1.x for AspNet Core 1
+Use v2.x for AspNet Core 2
+Use v6.x for AspNet Core in net 6 and above
 
 ## The Ministry of Technology Open Source Products
 Welcome to The Ministry of Technology open source products. All open source Ministry of Technology products are distributed under the MIT License for maximum re-usability.
