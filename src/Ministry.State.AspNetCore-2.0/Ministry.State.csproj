@@ -2,28 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Authors>Keith Jackson</Authors>
-    <Company>Minotech Ltd. (The Ministry of Technology)</Company>
-    <Description>Abstractions and base implementations for accessing different forms of state storage.</Description>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Copyright>2018 Minotech Ltd.</Copyright>
-    <RepositoryUrl>https://github.com/ministryotech/state.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
-    <FileVersion>2.0.0.0</FileVersion>
-    <Version>2.0.0</Version>
-    <PackageLicenseUrl>http://www.opensource.org/licenses/MIT</PackageLicenseUrl>
-    <PackageProjectUrl>http://www.ministryotech.co.uk/developers/open-source-projects/</PackageProjectUrl>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+    <FileVersion>2.1.0.0</FileVersion>
+    <Version>2.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.2" />
-    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="2.0.4" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="3.1.25" />
   </ItemGroup>
-
-  <Import Project="..\Ministry.State.Shared\Ministry.State.Shared.projitems" Label="Shared" />
-
-  <Import Project="..\Ministry.State.SharedCore\Ministry.State.Shared.projitems" Label="Shared" />
 
 </Project>

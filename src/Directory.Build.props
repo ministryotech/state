@@ -1,0 +1,63 @@
+<Project>
+
+    <PropertyGroup>
+        <Nullable>disable</Nullable>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <LangVersion>7.3</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <AnalysisMode>Recommended</AnalysisMode>
+        <AnalysisModeGlobalization>None</AnalysisModeGlobalization>
+        <AnalysisModeSecurity>All</AnalysisModeSecurity>
+        <AnalysisModeMaintainability>All</AnalysisModeMaintainability>
+        <AnalysisLevel>6.0</AnalysisLevel>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Description>Abstractions and base implementations for accessing different forms of state storage.</Description>
+        <Authors>Keith Jackson</Authors>
+        <Company>Minotech Ltd. (The Ministry of Technology)</Company>
+        <Copyright>2024 Keith Jackson / The Ministry of Technology</Copyright>
+        <RepositoryUrl>https://github.com/ministryotech/state.git</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <IncludeContentInPack>true</IncludeContentInPack>
+        <PackageReadMeFile>README.md</PackageReadMeFile>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <!--<WarningsNotAsErrors></WarningsNotAsErrors>--><!--Enable this to allow some warnings-->
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
+        <None Include="..\..\README.md" Pack="true" PackagePath="" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Include="..\Ministry.State.Shared\CookieStateBase.cs">
+            <Link>CookieStateBase.cs</Link>
+        </Compile>
+        <Compile Include="..\Ministry.State.Shared\InMemoryStateBase.cs">
+            <Link>InMemoryStateBase.cs</Link>
+        </Compile>
+        <Compile Include="..\Ministry.State.Shared\IStateStorage.cs">
+            <Link>IStateStorage.cs</Link>
+        </Compile>
+        <Compile Include="..\Ministry.State.Shared\WebSessionStateBase.cs">
+            <Link>WebSessionStateBase.cs</Link>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    </ItemGroup>
+    
+</Project>

@@ -1,17 +1,5 @@
-﻿// Copyright (c) 2018 Minotech Ltd.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files
-// (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge,
-// publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do
-// so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
-// FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Ministry.State
@@ -22,6 +10,9 @@ namespace Ministry.State
     /// <remarks>
     /// This is a useful swap out for a concrete state. You can inherit a custom version for session storage checking if needed.
     /// </remarks>
+    /// <inheritdoc cref="IStateStorage"/>
+    [SuppressMessage("ReSharper", "UnusedType.Global", Justification = "Library")]
+    [SuppressMessage("ReSharper", "MemberCanBePrivate.Global", Justification = "Library")]
     public class InMemoryState : IStateStorage
     {
         #region | Construction |
@@ -41,43 +32,25 @@ namespace Ministry.State
         /// </summary>
         protected List<StateItem> Items { get; }
 
-        /// <summary>
-        /// Clears the state.
-        /// </summary>
+        /// <inheritdoc/>
         public void Clear() => Items.Clear();
 
-        /// <summary>
-        /// Gets the value.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <returns>The value.</returns>
+        /// <inheritdoc/>
         public object GetValue(string key) 
             => Items.All(o => o.Key != key) ? null : Items.FirstOrDefault(o => o.Key == key)?.Value;
 
-        /// <summary>
-        /// Gets the value.
-        /// </summary>
-        /// <typeparam name="T">The type of the object to get.</typeparam>
-        /// <param name="key">The key.</param>
-        /// <returns>The value.</returns>
+        /// <inheritdoc/>
         public T GetValue<T>(string key) 
             => (T)Items.FirstOrDefault(o => o.Key == key)?.Value;
 
-        /// <summary>
-        /// Removes the specified iten from state.
-        /// </summary>
-        /// <param name="key">The key.</param>
+        /// <inheritdoc/>
         public void Remove(string key)
         {
             var item = Items.FirstOrDefault(o => o.Key == key);
             if (item != null) Items.Remove(item);
         }
 
-        /// <summary>
-        /// Sets the value.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="value">The value.</param>
+        /// <inheritdoc/>
         public void SetValue(string key, object value)
         {
             if (Items.All(o => o.Key != key))
@@ -86,12 +59,7 @@ namespace Ministry.State
                 Items.First(o => o.Key == key).Value = value;
         }
 
-        /// <summary>
-        /// Sets the value.
-        /// </summary>
-        /// <typeparam name="T">The type of the value to set.</typeparam>
-        /// <param name="key">The key.</param>
-        /// <param name="value">The value.</param>
+        /// <inheritdoc/>
         public void SetValue<T>(string key, T value)
         {
             if (Items.All(o => o.Key != key))
